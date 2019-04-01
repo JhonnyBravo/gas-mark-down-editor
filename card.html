@@ -1,0 +1,41 @@
+<? var table=parameters.findAll();?>
+<? for(var row=0; row<table.length; row++){?>
+  <div class="card">
+    <h5 class="card-header"><?= table[row][1]?></h5>
+    <div class="card-body">
+      <div class="card-text"><?= table[row][2]?></div>
+      <? if(parameters.getPage()!="sample"){?>
+        <a href="<?= parameters.getBaseUrl()+'?page=update&id='+table[row][0]?>" class="btn btn-primary">編集</a>
+      <? }?>
+    </div>
+  </div>
+<? }?>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  function initTable(){
+    var tables=document.getElementsByTagName("table");
+    
+    for(var i=0; i<tables.length; i++){
+      tables[i].setAttribute("class","table table-bordered");
+    }
+    
+    var theads=document.getElementsByTagName("thead");
+    
+    for(var i=0; i<theads.length; i++){
+      theads[i].setAttribute("class","thead-dark");
+    }
+  }
+  
+  function initCard(){
+    var cards=document.querySelectorAll("div.card-text");
+    
+    for(var i=0; i<cards.length; i++){
+      text=cards[i].textContent;
+      cards[i].innerHTML=marked(text, {sanitize: true});
+    }
+    
+    initTable();
+  }
+  
+  window.addEventListener("load", initCard);
+</script>
