@@ -1,71 +1,75 @@
 <form id="insertRecord">
-  <div class="form-group">
-    <input type="text" class="form-control" name="title" id="txtTitle" placeholder="Title">
-    <textarea class="form-control" name="contents" id="txtContents" rows="15" placeholder="Contents"></textarea>
-    <button type="button" class="btn btn-primary" id="btnClear">クリア</button>
-    <button type="button" class="btn btn-primary" id="btnPreview">プレビュー</button>
-    <button type="submit" class="btn btn-primary" id="btnSave">保存</button>
-  </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="title"
+            id="txtTitle" placeholder="Title">
+        <textarea class="form-control" name="contents" id="txtContents"
+            rows="15" placeholder="Contents"></textarea>
+        <button type="button" class="btn btn-primary" id="btnClear">クリア</button>
+        <button type="button" class="btn btn-primary" id="btnPreview">プレビュー</button>
+        <button type="submit" class="btn btn-primary" id="btnSave">保存</button>
+    </div>
 </form>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-  function initTable(){
-    var tables=document.getElementsByTagName("table");
-    
-    for(var i=0; i<tables.length; i++){
-      tables[i].setAttribute("class","table table-bordered");
-    }
-    
-    var theads=document.getElementsByTagName("thead");
-    
-    for(var i=0; i<theads.length; i++){
-      theads[i].setAttribute("class","thead-dark");
-    }
-  }
-  
-  function preview(){
-    var contents=document.getElementById("txtContents");
-    var htmlOutput=document.getElementById("output");
-    
-    htmlOutput.innerHTML=marked(contents.value, {sanitize: true});
-    initTable();
-  }
-  
-  function clear(){
-    var title=document.getElementById("txtTitle");
-    var contents=document.getElementById("txtContents");
-    var htmlOutput=document.getElementById("output");
-    
-    title.value=null;
-    contents.value=null;
-    htmlOutput.innerHTML=null;
-  }
-  
-  function moveToIndex(){
-    window.alert("保存しました。");
-    var anchor=document.createElement("a");
-    anchor.setAttribute("href", <?= parameters.getBaseUrl();?>);
-    anchor.click();
-  }
-  
-  function handleFormSubmit(objForm){
-    google.script.run.withSuccessHandler(moveToIndex).insertRecord(objForm);
-  }
-  
-  function initForm(){
-    var form=document.getElementById("insertRecord");
-    form.addEventListener("submit", function(event){
-      event.preventDefault();
-    });
-    
-    form.setAttribute("onsubmit", "handleFormSubmit(this)");
-    
-    var btnClear=document.getElementById("btnClear");
-    btnClear.addEventListener("click", clear);
-    
-    var btnPreview=document.getElementById("btnPreview");
-    btnPreview.addEventListener("click", preview);
-  }
-  
-  window.addEventListener("load", initForm);
+	function initTable() {
+		var tables = document.getElementsByTagName("table");
+
+		for (var i = 0; i < tables.length; i++) {
+			tables[i].setAttribute("class", "table table-bordered");
+		}
+
+		var theads = document.getElementsByTagName("thead");
+
+		for (var i = 0; i < theads.length; i++) {
+			theads[i].setAttribute("class", "thead-dark");
+		}
+	}
+
+	function preview() {
+		var contents = document.getElementById("txtContents");
+		var htmlOutput = document.getElementById("output");
+
+		htmlOutput.innerHTML = marked(contents.value, {
+			sanitize : true
+		});
+		initTable();
+	}
+
+	function clear() {
+		var title = document.getElementById("txtTitle");
+		var contents = document.getElementById("txtContents");
+		var htmlOutput = document.getElementById("output");
+
+		title.value = null;
+		contents.value = null;
+		htmlOutput.innerHTML = null;
+	}
+
+	function moveToIndex() {
+		window.alert("保存しました。");
+		var anchor = document.createElement("a");
+		anchor.setAttribute("href", <?= parameters.baseUrl;?>);
+		anchor.click();
+	}
+
+	function handleFormSubmit(objForm) {
+		google.script.run.withSuccessHandler(moveToIndex).insertRecord(objForm);
+	}
+
+	function initForm() {
+		var form = document.getElementById("insertRecord");
+		form.addEventListener("submit", function(event) {
+			event.preventDefault();
+		});
+
+		form.setAttribute("onsubmit", "handleFormSubmit(this)");
+
+		var btnClear = document.getElementById("btnClear");
+		btnClear.addEventListener("click", clear);
+
+		var btnPreview = document.getElementById("btnPreview");
+		btnPreview.addEventListener("click", preview);
+	}
+
+	window.addEventListener("load", initForm);
 </script>
