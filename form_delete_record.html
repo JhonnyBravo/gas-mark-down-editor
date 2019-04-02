@@ -1,43 +1,44 @@
 <div class="alert alert-danger text-center" role="alert">
-  記事を削除します。よろしいですか?
-</div>
+    記事を削除します。よろしいですか?</div>
 <form id="deleteRecord">
-  <input type="hidden" class="form-control" id="txtId" name="id">
-  <button type="submit" class="btn btn-danger btn-block" id="btnDelete">削除</button>
-  <button type="button" class="btn btn-secondary btn-block" id="btnCancel">キャンセル</button>
+    <input type="hidden" class="form-control" id="txtId" name="id">
+    <button type="submit" class="btn btn-danger btn-block"
+        id="btnDelete">削除</button>
+    <button type="button" class="btn btn-secondary btn-block"
+        id="btnCancel">キャンセル</button>
 </form>
 <script>
-  function cancel(){
-    var anchor=document.createElement("a");
-    anchor.setAttribute("href", <?= parameters.getBaseUrl();?>);
-    anchor.click();
-  }
-  
-  function moveToIndex(){
-    window.alert("削除しました。");
-    var anchor=document.createElement("a");
-    anchor.setAttribute("href", <?= parameters.getBaseUrl();?>);
-    anchor.click();
-  }
-  
-  function handleFormSubmit(objForm){
-    google.script.run.withSuccessHandler(moveToIndex).deleteRecord(objForm);
-  }
-  
-  function initForm(){
-    var form=document.getElementById("deleteRecord");
-    form.addEventListener("submit", function(event){
-      event.preventDefault();
-    });
-    
-    form.setAttribute("onsubmit", "handleFormSubmit(this)");
-    
-    var id=document.getElementById("txtId");
-    id.value=<?= parameters.getId();?>
-    
-    var btnCancel=document.getElementById("btnCancel");
-    btnCancel.addEventListener("click", cancel);
-  }
-  
-  window.addEventListener("load", initForm);
+	function cancel() {
+		var anchor = document.createElement("a");
+		anchor.setAttribute("href", <?= parameters.baseUrl;?>);
+		anchor.click();
+	}
+
+	function moveToIndex() {
+		window.alert("削除しました。");
+		var anchor = document.createElement("a");
+		anchor.setAttribute("href", <?= parameters.baseUrl;?>);
+		anchor.click();
+	}
+
+	function handleFormSubmit(objForm) {
+		google.script.run.withSuccessHandler(moveToIndex).deleteRecord(objForm);
+	}
+
+	function initForm() {
+		var form = document.getElementById("deleteRecord");
+		form.addEventListener("submit", function(event) {
+			event.preventDefault();
+		});
+
+		form.setAttribute("onsubmit", "handleFormSubmit(this)");
+
+		var id = document.getElementById("txtId");
+		id.value = <?= parameters.id;?>
+
+		var btnCancel = document.getElementById("btnCancel");
+		btnCancel.addEventListener("click", cancel);
+	}
+
+	window.addEventListener("load", initForm);
 </script>
