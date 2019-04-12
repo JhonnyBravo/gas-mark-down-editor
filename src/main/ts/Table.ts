@@ -21,7 +21,7 @@ class Table extends QueryParameters {
         }
     }
 
-    public findAll(): Object[][] {
+    public findAll(): {} {
         let row = this._sheet.getRange("A2").getRow();
         const col = this._sheet.getRange("A2").getColumn();
         let endRow: string;
@@ -60,17 +60,15 @@ class Table extends QueryParameters {
         return table;
     }
 
-    public insertRecord(objForm): void {
-        let id: number;
-        const title = objForm.title;
-        const contents = objForm.contents;
-
+    public insertRecord(title: string, contents: string): void {
         let row = this._sheet.getRange("A2").getRow();
         const col = this._sheet.getRange("A2").getColumn();
 
         while (this._sheet.getRange(row, col).getValue() != "") {
             row++;
         }
+
+        let id: number;
 
         if (this._sheet.getRange(row, col).getA1Notation() == "A2") {
             id = 1;
@@ -83,11 +81,7 @@ class Table extends QueryParameters {
         this._sheet.getRange(row, col + 2).setValue(contents);
     }
 
-    public updateRecord(objForm) {
-        const id = objForm.id;
-        const title = objForm.title;
-        const contents = objForm.contents;
-
+    public updateRecord(id: number, title: string, contents: string) {
         let row = this._sheet.getRange("A2").getRow();
         const col = this._sheet.getRange("A2").getColumn();
 
@@ -103,9 +97,7 @@ class Table extends QueryParameters {
         }
     }
 
-    public deleteRecord(objForm) {
-        const id = objForm.id;
-
+    public deleteRecord(id: number) {
         let row = this._sheet.getRange("A2").getRow();
         const col = this._sheet.getRange("A2").getColumn();
 
