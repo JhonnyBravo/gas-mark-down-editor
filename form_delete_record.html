@@ -1,44 +1,37 @@
 <div class="alert alert-danger text-center" role="alert">
     記事を削除します。よろしいですか?</div>
 <form id="deleteRecord">
-    <input type="hidden" class="form-control" id="txtId" name="id">
-    <button type="submit" class="btn btn-danger btn-block"
-        id="btnDelete">削除</button>
-    <button type="button" class="btn btn-secondary btn-block"
-        id="btnCancel">キャンセル</button>
+    <input v-model="id" type="hidden" class="form-control">
+    <button v-on:click="deleteRecord" type="button"
+        class="btn btn-danger btn-block">削除</button>
+    <button v-on:click="moveToIndex" type="button"
+        class="btn btn-secondary btn-block">キャンセル</button>
 </form>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
-	function cancel() {
-		var anchor = document.createElement("a");
-		anchor.setAttribute("href", <?= parameters.baseUrl;?>);
-		anchor.click();
-	}
+	var deleteRecord = new Vue({
+		el : "#deleteRecord",
+		data : {
+			baseUrl : null,
+			id : null
+		},
+		methods : {
+			moveToIndex : function() {
+				var anchor = document.createElement("a");
+				anchor.setAttribute("href", this.baseUrl);
+				anchor.click();
+			},
+			successHandler : function() {
+				window.alert("削除しました。");
+				this.moveToIndex();
+			},
+			deleteRecord : function() {
+				google.script.run.withSuccessHandler(this.successHandler)
+						.deleteRecord(this.id);
+			}
+		}
+	});
 
-	function moveToIndex() {
-		window.alert("削除しました。");
-		var anchor = document.createElement("a");
-		anchor.setAttribute("href", <?= parameters.baseUrl;?>);
-		anchor.click();
-	}
-
-	function handleFormSubmit(objForm) {
-		google.script.run.withSuccessHandler(moveToIndex).deleteRecord(objForm);
-	}
-
-	function initForm() {
-		var form = document.getElementById("deleteRecord");
-		form.addEventListener("submit", function(event) {
-			event.preventDefault();
-		});
-
-		form.setAttribute("onsubmit", "handleFormSubmit(this)");
-
-		var id = document.getElementById("txtId");
-		id.value = <?= parameters.id;?>
-
-		var btnCancel = document.getElementById("btnCancel");
-		btnCancel.addEventListener("click", cancel);
-	}
-
-	window.addEventListener("load", initForm);
+	deleteRecord.baseUrl = "<?= parameters.baseUrl;?>";
+	deleteRecord.id = <?= parameters.id;?>;
 </script>
