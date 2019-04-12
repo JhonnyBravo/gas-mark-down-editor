@@ -1,15 +1,15 @@
 let ADDRESS = "https://docs.google.com/spreadsheets/d/1izkZ1bvWPX3x2MjczdrBenmHRrC2gshfANJW9HGQJFg/edit#gid=0";
 
 function doGet(request) {
-    let page = request.parameter.page;
-    let id = request.parameter.id;
+    const page = request.parameter.page;
+    const id = request.parameter.id;
 
-    let parameters = new QueryParameters();
+    const parameters = new QueryParameters();
     parameters.page = page;
     parameters.id = id;
 
-    let userName = Session.getActiveUser().getEmail().split("@");
-    let table = new Table(ADDRESS);
+    const userName = Session.getActiveUser().getEmail().split("@");
+    const table = new Table(ADDRESS);
     table.page = page;
     table.id = id;
     table.openSheet(userName[0]);
@@ -41,23 +41,23 @@ function doGet(request) {
     }
 }
 
-function insertRecord(objForm) {
-    let userName = Session.getActiveUser().getEmail().split("@");
-    let table = new Table(ADDRESS);
+function insertRecord(title: string, contents: string) {
+    const userName = Session.getActiveUser().getEmail().split("@");
+    const table = new Table(ADDRESS);
     table.openSheet(userName[0]);
-    table.insertRecord(objForm);
+    table.insertRecord(title, contents);
 }
 
-function updateRecord(objForm) {
-    let userName = Session.getActiveUser().getEmail().split("@");
-    let table = new Table(ADDRESS);
+function updateRecord(id: number, title: string, contents: string) {
+    const userName = Session.getActiveUser().getEmail().split("@");
+    const table = new Table(ADDRESS);
     table.openSheet(userName[0]);
-    table.updateRecord(objForm);
+    table.updateRecord(id, title, contents);
 }
 
-function deleteRecord(objForm) {
-    let userName = Session.getActiveUser().getEmail().split("@");
-    let table = new Table(ADDRESS);
+function deleteRecord(id: number) {
+    const userName = Session.getActiveUser().getEmail().split("@");
+    const table = new Table(ADDRESS);
     table.openSheet(userName[0]);
-    table.deleteRecord(objForm);
+    table.deleteRecord(id);
 }
