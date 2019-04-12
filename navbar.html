@@ -1,6 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="<?= parameters.baseUrl;?>">Mark
-        Down Editor</a>
+<nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a v-bind:href="baseUrl" class="navbar-brand">{{title}}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse"
         data-target="#navbarNav" aria-controls="navbarNav"
         aria-expanded="false" aria-label="Toggle navigation">
@@ -8,13 +7,26 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link"
-                href="<?= parameters.baseUrl+'?page=create'?>">新規登録<span
-                    class="sr-only">(current)</span></a></li>
-            <li class="nav-item"><a class="nav-link"
-                href="<?= parameters.baseUrl+'?page=sample'?>">Mark
-                    Down チートシート<span class="sr-only">(current)</span>
-            </a></li>
+            <li v-for="list in lists" class="nav-item">
+                <a v-bind:href="baseUrl+list.query" class="nav-link">{{list.title}}</a>
+            </li>
         </ul>
     </div>
 </nav>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+	var navbar = new Vue({
+		el : "#navbar",
+		data : {
+			baseUrl : "<?= parameters.baseUrl;?>",
+			title : "Mark Down Editor",
+			lists : [ {
+				query : "?page=create",
+				title : "新規登録"
+			}, {
+				query : "?page=sample",
+				title : "Mark Down チートシート"
+			} ]
+		}
+	});
+</script>
