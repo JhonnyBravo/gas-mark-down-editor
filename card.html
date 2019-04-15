@@ -15,6 +15,7 @@
 </div>
 <? }?>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://unpkg.com/mermaid@8.0.0/dist/mermaid.min.js"></script>
 <script>
 	function initTable() {
 		var tables = document.getElementsByTagName("table");
@@ -31,15 +32,33 @@
 	}
 
 	function initCard() {
+		mermaid.initialize({
+			startOnLoad : false
+		});
+
+		var renderer = new marked.Renderer();
+		renderer.code = function(code) {
+			var text = code.replace(/&/g, "&amp;").replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;");
+
+			if (code.match(/^graph/) || code.match(/^sequenceDiagram/)
+					|| code.match(/^gantt/) || code.match(/^classDiagram/)) {
+				return '<div class="mermaid">' + text + '\n</div>';
+			} else {
+				return '<pre><code>\n' + text + '\n</code></pre>';
+			}
+		}
+
 		var cards = document.querySelectorAll("div.card-text");
 
 		for (var i = 0; i < cards.length; i++) {
 			text = cards[i].textContent;
 			cards[i].innerHTML = marked(text, {
-				sanitize : true
+				sanitize : true,
+				renderer : renderer
 			});
 		}
-
+		mermaid.init();
 		initTable();
 	}
 
