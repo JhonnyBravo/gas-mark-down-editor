@@ -12,6 +12,7 @@
     </div>
 </form>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://unpkg.com/mermaid@8.0.0/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
 	var insertRecord = new Vue({
@@ -36,10 +37,29 @@
 				}
 			},
 			preview : function() {
+				mermaid.initialize({
+					startOnLoad : false
+				});
+
+				var renderer = new marked.Renderer();
+				renderer.code = function(code) {
+					var text=code.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+					
+					if (code.match(/^graph/) || code.match(/^sequenceDiagram/)
+							|| code.match(/^gantt/)
+							|| code.match(/^classDiagram/)) {
+						return '<div class="mermaid">' + text + '\n</div>';
+					} else {
+						return '<pre><code>\n' + text + '\n</code></pre>';
+					}
+				}
+
 				var htmlOutput = document.getElementById("output");
 				htmlOutput.innerHTML = marked(this.contents, {
-					sanitize : true
+					sanitize : true,
+					renderer : renderer
 				});
+				mermaid.init();
 				this.setStyleToTable();
 			},
 			clear : function() {
